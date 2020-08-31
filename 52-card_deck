@@ -1,0 +1,26 @@
+import collections
+from random import choice
+
+Card = collections.namedtuple('Card', ['rank', 'suit', 'power'])
+
+class Deck:
+
+	ranks = [str(_) for _ in range(2, 11)] + ['J', 'Q', 'K', 'A']
+	suits = ['spades', 'hearts', 'diamonds', 'clubs']
+	powers = {r: v for (v, r) in enumerate(ranks)}
+
+	def __init__(self):
+		self.cards = [Card(rank, suit, self.powers[rank]) for suit in self.suits
+		for rank in self.ranks]
+
+	def __len__(self):
+		return len(self.cards)
+
+	def __getitem__(self, i):
+		return self.cards[i]
+
+	def draw(self, num):
+		drawn_cards = [choice(self.cards) for _ in range(num)]
+		for _ in drawn_cards:
+			self.cards.remove(_)
+		return drawn_cards
